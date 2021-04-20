@@ -1,0 +1,72 @@
+\documentclass[12pt]{jarticle}
+\usepackage{TUSIreport}
+\usepackage{otf}
+\usepackage{multirow}
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ul}{}
+%%%%%%%%%%%%%%%%%%
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 表紙を出力する場合は，\提出者と\共同実験者をいれる
+% \提出者{科目名}{課題名}{提出年}{提出月}{提出日}{学籍番号}{氏名}
+% \共同実験者{一人目}{二人目}{..}{..}{..}{..}{..}{八人目}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\提出者{情報工学実験3}{課題0}
+{2021}{4}{15}{4619055}{辰川力駆}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\共同実験者{}{}{}{}{}{}{}{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 表紙を出力する場合はコメントアウトしない
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\表紙出力
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 以下はレポート本体，reportmain.tex に書いてある．
+% \inputを使っているが，直接書いても良い．
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{center}
+    学籍番号: \underline{4619055}，氏名: \underline{辰川 力駆}
+\end{center}
+
+以下の表は, 東京理科大学工学部情報工学科の２年生向けに開講されている
+情報工学実験１のスケジュールを, \LaTeX により作成したものである.
+作成のためには, 以下のスタイルファイルをusepackage するとよい.
+
+\begin{itemize}
+    \item array.sty
+    \item otf.sty（ただし, deluxe オプションをつける）
+    \item multirow.sty
+    \item multicolumn.sty
+\end{itemize}
+
+\begin{table}[htb]
+    \begin{center}
+        \begin{tabular}{|l||c|c|c|c|c|c||c|c|c|c|c|c|}
+            \hline
+            実験日      & G1                                                           & G2                               & G3                               & G4                               & G5                               & G6                               & G7                               & G8                               & G9                               & G10                              & G11                              & G12                              \\ \hline \hline
+            4月12日(月) & \multicolumn{12}{c|}{ガイダンス, \LaTeX 演習(\underline{0})}                                                                                                                                                                                                                                                                                                                                                                                                  \\ \hline \hline
+            4月19日(月) & \multirow{3}{*}{{\underline{2}}}                             & \multirow{3}{*}{{\underline{2}}} & \multirow{3}{*}{{\underline{2}}} & \multirow{3}{*}{{\underline{3}}} & \multirow{3}{*}{{\underline{3}}} & \multirow{3}{*}{{\underline{3}}} & \multirow{2}{*}{{\underline{1}}} & \multirow{2}{*}{{\underline{1}}} & \multirow{2}{*}{{\underline{5}}} & \multirow{2}{*}{{\underline{5}}} & \multirow{2}{*}{{\underline{4}}} & \multirow{2}{*}{{\underline{4}}} \\
+            4月26日(月) &                                                              &                                  &                                  &                                  &                                  &                                  &                                  &                                  &                                  &                                  &                                  &                                  \\ \cline{8-13}
+            5月10日(月) &                                                              &                                  &                                  &                                  &                                  &                                  & \multirow{2}{*}{{\underline{4}}} & \multirow{2}{*}{{\underline{4}}} & \multirow{2}{*}{{\underline{1}}} & \multirow{2}{*}{{\underline{1}}} & \multirow{2}{*}{{\underline{5}}} & \multirow{2}{*}{{\underline{5}}} \\ \cline{2-7}
+            5月17日(月) & \multirow{3}{*}{{\underline{3}}}                             & \multirow{3}{*}{{\underline{3}}} & \multirow{3}{*}{{\underline{3}}} & \multirow{3}{*}{{\underline{2}}} & \multirow{3}{*}{{\underline{2}}} & \multirow{3}{*}{{\underline{2}}} &                                  &                                  &                                  &                                  &                                  &                                  \\ \cline{8-13}
+            5月24日(月) &                                                              &                                  &                                  &                                  &                                  &                                  & \multirow{2}{*}{{\underline{5}}} & \multirow{2}{*}{{\underline{5}}} & \multirow{2}{*}{{\underline{4}}} & \multirow{2}{*}{{\underline{4}}} & \multirow{2}{*}{{\underline{1}}} & \multirow{2}{*}{{\underline{1}}} \\
+            5月31日(月) &                                                              &                                  &                                  &                                  &                                  &                                  &                                  &                                  &                                  &                                  &                                  &                                  \\ \hline \hline
+            6月07日(月) & \multirow{2}{*}{{\underline{1}}}                             & \multirow{2}{*}{{\underline{1}}} & \multirow{2}{*}{{\underline{5}}} & \multirow{2}{*}{{\underline{5}}} & \multirow{2}{*}{{\underline{4}}} & \multirow{2}{*}{{\underline{4}}} & \multirow{3}{*}{{\underline{2}}} & \multirow{3}{*}{{\underline{2}}} & \multirow{3}{*}{{\underline{2}}} & \multirow{3}{*}{{\underline{3}}} & \multirow{3}{*}{{\underline{3}}} & \multirow{3}{*}{{\underline{3}}} \\
+            6月14日(月) &                                                              &                                  &                                  &                                  &                                  &                                  &                                  &                                  &                                  &                                  &                                  &                                  \\ \cline{2-7}
+            6月21日(月) & \multirow{2}{*}{{\underline{4}}}                             & \multirow{2}{*}{{\underline{4}}} & \multirow{2}{*}{{\underline{1}}} & \multirow{2}{*}{{\underline{1}}} & \multirow{2}{*}{{\underline{5}}} & \multirow{2}{*}{{\underline{5}}} &                                  &                                  &                                  &                                  &                                  &                                  \\ \cline{8-13}
+            6月28日(月) &                                                              &                                  &                                  &                                  &                                  &                                  & \multirow{3}{*}{{\underline{3}}} & \multirow{3}{*}{{\underline{3}}} & \multirow{3}{*}{{\underline{3}}} & \multirow{3}{*}{{\underline{2}}} & \multirow{3}{*}{{\underline{2}}} & \multirow{3}{*}{{\underline{2}}} \\ \cline{2-7}
+            7月05日(月) & \multirow{2}{*}{{\underline{5}}}                             & \multirow{2}{*}{{\underline{5}}} & \multirow{2}{*}{{\underline{4}}} & \multirow{2}{*}{{\underline{4}}} & \multirow{2}{*}{{\underline{1}}} & \multirow{2}{*}{{\underline{1}}} &                                  &                                  &                                  &                                  &                                  &                                  \\
+            7月12日(月) &                                                              &                                  &                                  &                                  &                                  &                                  &                                  &                                  &                                  &                                  &                                  &                                  \\ \hline \hline
+            7月19日(月) & \multicolumn{12}{c|}{予備日}                                                                                                                                                                                                                                                                                                                                                                                                                                  \\ \hline
+        \end{tabular}
+    \end{center}
+\end{table}
+
+\begin{flushright}
+    （注）表中の下線付数字は課題番号である.
+\end{flushright}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}

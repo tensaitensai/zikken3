@@ -1,0 +1,104 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% 東京理科大学 工学部 情報工学科
+% 学生実験用 レポートスタイルファイル Ver 1.0 (06/may/2020) 
+%
+% 作: 池口 徹＠
+% 
+% File : TUSIReport.sty Copyright 2020 Tohru Ikeguchi
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NeedsTeXFormat{pLaTeX2e}
+\ProvidesPackage{TUSIReport}[15 April 2021, v1.0]
+\typeout{Style file for 情報工学実験}
+\typeout{Copyright (C) Tohru Ikeguchi, TUS}
+\addtolength{\topmargin}{-22mm}
+\addtolength{\oddsidemargin}{-28mm}
+\setlength{\textheight}{250mm}
+\setlength{\textwidth}{170mm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagenumbering{arabic}
+\newcommand{\共同実験者}[8]{%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\gdef\共同実験者１{#1}\gdef\共同実験者２{#2}
+\gdef\共同実験者３{#3}\gdef\共同実験者４{#4}
+\gdef\共同実験者５{#5}\gdef\共同実験者６{#6}
+\gdef\共同実験者７{#7}\gdef\共同実験者８{#8}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\提出者}[7]{%
+\gdef\科目名{#1}\gdef\実験課題名{#2}
+\gdef\実験実施年{#3}\gdef\実験実施月{#4}\gdef\実験実施日{#5}
+\gdef\学籍番号{#6}
+\gdef\氏名{#7}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\表紙出力}{
+
+\thispagestyle{empty}
+
+\begin{center}
+ {\fontsize{32pt}{16pt}\selectfont レポート提出票}
+\end{center}
+
+\ \vspace*{10mm} \
+
+\fontsize{20pt}{20pt}\selectfont
+\addtolength{\oddsidemargin}{1cm}
+\begin{flushleft}
+
+ \begin{tabular}{p{5zw}p{18zw}}
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \makebox[2zw][s]{科目名: }&  {\科目名} \\ \cline{2-2}  \\
+  \makebox[2zw][s]{実験課題名: }& {\実験課題名} \\ \cline{2-2}  \\
+  \makebox[2zw][s]{実施日: } &
+      {\実験実施年 年 \実験実施月 月 \実験実施日 日}\\ \cline{2-2}\\
+  \makebox[2zw][s]{学籍番号: }& {\学籍番号} \\ \cline{2-2}  \\
+  \makebox[2zw][s]{氏名: }&  {\氏名} \\ \cline{2-2} \\
+%  \makebox[2zw][s]{学籍番号: }&  \multicolumn{4}{l}{\学籍番号} \\[4mm]
+%  \makebox[2zw][s]{氏名: }&  \multicolumn{4}{l}{\氏名} \\[4mm]
+%  \makebox[2zw][s]{共同実験者: }&
+%      \multicolumn{2}{l}{\共同実験者１}&\multicolumn{2}{l}{\共同実験者２}\\[4mm]
+%  &   \multicolumn{2}{l}{\共同実験者３}&\multicolumn{2}{l}{\共同実験者４}\\[4mm]
+%  &   \multicolumn{2}{l}{\共同実験者５}&\multicolumn{2}{l}{\共同実験者６}\\[4mm]
+%  &   \multicolumn{2}{l}{\共同実験者７}&\multicolumn{2}{l}{\共同実験者８}\\[4mm]
+ \end{tabular}
+
+  \begin{tabular}{p{5zw}llcll} 
+  \makebox[2zw][s]{共同実験者: }&
+   \multicolumn{2}{p{6zw}}{{\共同実験者１}}&&
+   \multicolumn{2}{p{6zw}}{\共同実験者２}\\
+   \cline{2-3} \cline{5-6}
+   \\
+   &
+       \multicolumn{2}{p{6zw}}{{\共同実験者３}}&　&
+   \multicolumn{2}{p{6zw}}{\共同実験者４}\\
+   \cline{2-3} \cline{5-6}
+   \\
+   &   \multicolumn{2}{p{6zw}}{\共同実験者５}&　&
+   \multicolumn{2}{p{6zw}}{\共同実験者６}\\
+   \cline{2-3} \cline{5-6}
+   \\
+   &   \multicolumn{2}{p{6zw}}{\共同実験者７}&　&
+   \multicolumn{2}{p{6zw}}{\共同実験者８}\\
+   \cline{2-3} \cline{5-6}      
+  \end{tabular}
+ 
+\end{flushleft}
+\vfill
+\begin{flushright}
+ \fontsize{10pt}{8pt}\selectfont
+ \copyright \ \ 2020-21 東京理科大学 工学部 情報工学科
+\end{flushright}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setcounter{page}{0}
+\clearpage
+\normalsize
+\addtolength{\oddsidemargin}{-1cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+}
+
+
+
+
+
