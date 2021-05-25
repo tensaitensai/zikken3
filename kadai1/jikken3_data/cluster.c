@@ -15,7 +15,7 @@ int main(void)
 
     int i, j, k;
     int vertex = 0;                            //頂点数を保存する。
-    while (fscanf(fp, "%d %d", &i, &j) != EOF) // 順番に辺の両端 a,bを読み込む
+    while (fscanf(fp, "%d %d", &i, &j) != EOF) // 順番に辺の両端 i,jを読み込む
     {
         if (i + 1 > vertex)
             vertex = i + 1;
@@ -33,7 +33,7 @@ int main(void)
     }
 
     fp = fopen(fname, "r");
-    while (fscanf(fp, "%d %d", &i, &j) != EOF) // 順番に辺の両端 a,bを読み込む
+    while (fscanf(fp, "%d %d", &i, &j) != EOF) // 順番に辺の両端 i,jを読み込む
     {
         Adj[i][j]++;
         Adj[j][i]++;
@@ -73,5 +73,5 @@ int main(void)
             cluster_total += (double)triangle / (double)((degree[i] - 1) * degree[i]);
     }
 
-    printf("クラスタ係数: %.4lf", cluster_total / (double)(vertex));
+    printf("クラスタ係数: %.4lf\n", cluster_total / (double)(vertex));
 }

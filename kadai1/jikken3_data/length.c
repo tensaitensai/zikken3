@@ -3,6 +3,33 @@
 #include <stdlib.h>
 #include <string.h>
 
+struct queue // 待ち行列
+{
+    int item;
+    struct queue *next;
+};
+
+struct queue *head, *tail;
+
+void addq(int x)
+{
+    tail->item = x;
+    tail->next = (struct queue *)malloc(sizeof(struct queue));
+    tail = tail->next;
+}
+
+int rmvq(void)
+{
+    int x;
+    struct queue *p;
+
+    p = head;
+    head = p->next;
+    x = p->item;
+    free((char *)p);
+    return x;
+}
+
 int main(void)
 {
     char fname[128];
@@ -13,9 +40,9 @@ int main(void)
     fflush(stdin);
     fp = fopen(fname, "r");
 
-    int i, j, k;
+    int i, j;
     int vertex = 0;                            //頂点数を保存する。
-    while (fscanf(fp, "%d %d", &i, &j) != EOF) // 順番に辺の両端 a,bを読み込む
+    while (fscanf(fp, "%d %d", &i, &j) != EOF) // 順番に辺の両端 i,jを読み込む
     {
         if (i + 1 > vertex)
             vertex = i + 1;
@@ -33,45 +60,50 @@ int main(void)
     }
 
     fp = fopen(fname, "r");
-    while (fscanf(fp, "%d %d", &i, &j) != EOF) // 順番に辺の両端 a,bを読み込む
+    while (fscanf(fp, "%d %d", &i, &j) != EOF) // 順番に辺の両端 i,jを読み込む
     {
         Adj[i][j]++;
         Adj[j][i]++;
     }
     fclose(fp);
 
-    double cluster_total = 0; //クラスタ数の合計を表す変数
-    int degree[vertex];       //次数を表す変数
-    int triangle;             //三角形の数を数える変数
-    for (i = 0; i < vertex; i++)
+    int distance[vertex];   //最短距離を表す変数
+    double mean_vertex = 0; //平均頂点間距離を表す変数
+
+    head = (struct queue *)malloc(sizeof(struct queue));
+    tail = head;
+
+    int START = 0;
+    for (START = 0; START < vertex; START++)
     {
-        degree[i] = 0;
-        for (j = 0; j < vertex; j++)
+        for (i = 0; i < vertex; i++)
         {
-            degree[i] += Adj[i][j];
+            distance[i] = -1;
         }
-    }
 
-    //クラスタ係数を求める
-    for (i = 0; i < vertex; i++)
-    {
-        triangle = 0;
-
-        for (j = 0; j < vertex; j++)
+        addq(START);
+        distance[START] = 0;
+        do
         {
-            if (Adj[i][j] == 1)
+            i = rmvq();
+            for (j = 0; j < vertex; j++)
             {
-                for (k = 0; k < vertex; k++)
+                if (Adj[i][j] != 0 && distance[j] < 0)
                 {
-                    if (Adj[i][k] == 1 && Adj[j][k] == 1)
-                        triangle++;
+                    addq(j);
+                    distance[j] = distance[i] + 1;
                 }
             }
-        }
+        } while (head != tail);
 
-        if (degree[i] > 1)
-            cluster_total += (double)triangle / (double)((degree[i] - 1) * degree[i]);
+        for (i = 0; i < vertex; i++)
+        {
+            if (START < i)
+            {
+                mean_vertex += 2 * (double)distance[i] / (double)((vertex - 1) * vertex);
+            }
+        }
     }
 
-    printf("クラスタ係数: %.4lf", cluster_total / (double)(vertex));
+    printf("平均頂点間距離: %.4lf\n", mean_vertex);
 }
