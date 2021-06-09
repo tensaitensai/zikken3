@@ -146,13 +146,13 @@ reserve\_tbを使用する。
 \subsection{課題1}
 作成したプログラムは付録Aのソースコード1,2に載せた。実行結果は次のようになった。
 \begin{eqnarray}
-    (\text{reserve\_tb}の行を50％サンプリングした後に顧客を重複なく列にした場合)&=& 2.61010 \nonumber \\
+    (\text{reserve\_tb}の行を50％サンプリングした後に顧客を重複なく列にした場合)&=& 4.84244 \nonumber \\
     (\text{reserve\_tb}から重複のない顧客の列を抽出し50％サンプリングをした場合)&=& 4.69369 \nonumber
 \end{eqnarray}
 
 このような差が生まれた理由は、
 サンプルされる顧客の数が違うことに原因があると考える。
-後者の場合の方が顧客の数がすくなくなるので相対的に一人あたりの数が増えると考える。
+前者の場合の方が顧客の数が多くなるので相対的に一人あたりの予約件数が多くなると考える。
 
 \subsection{課題2}
 作成したプログラムは付録Aのソースコード3に載せた。
@@ -208,8 +208,8 @@ price\_maxの列を消そうか考えたが、あるほうが自然なので残�
     import pandas as pd
     reserve_tb = pd.read_csv('data/reserve.csv', encoding='UTF-8')
     
-    reserve_tb = reserve_tb.sample(frac=0.5)
-    target = reserve_tb['customer_id'].unique()
+    reserve_sample = reserve_tb.sample(frac=0.5)
+    target = reserve_sample['customer_id'].unique()
     
     kadai1_rslt = reserve_tb[reserve_tb['customer_id'].isin(target)].groupby('customer_id').size().reset_index()
     
@@ -278,7 +278,7 @@ price\_maxの列を消そうか考えたが、あるほうが自然なので残�
     plt.show()
 \end{lstlisting}
 
-\begin{lstlisting}[style = py,caption=課題1(2)]
+\begin{lstlisting}[style = py,caption=課題4]
     ##課題4
     import numpy as np
     import pandas as pd
