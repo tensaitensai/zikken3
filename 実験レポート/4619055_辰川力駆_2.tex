@@ -119,53 +119,180 @@ reserve\_tbから重複のない顧客の列を抽出し$50％$
 サンプリングをした場合で予約件数の平均がどの様に変わるかを確認し考察する。
 
 \subsection{課題2}
+reserve\_tb、customer\_tbを使用する。
+2016年1月1日から2016年12月31日までにされた
+男性客による予約(reserve\_datetimeが2016-01-01から2016-12-31)の
+total\_priceの最大値をホテルごとに算出する
+(指定された期間に男性客による予約のなかったホテルは除外する)。
+最もtotal\_priceの最大値が高かったホテルから上位10件を
+ランキング形式で降順に表示する。
+同じ件数の場合は同じ順位で表示する。
+
 \subsection{課題3}
+アヤメデータを実験で使ったのとは違う特徴量の組み合わせで基データ、
+標準化したデータ、正規化したデータのプロットを行う。
+プロットした図から読み取れることを考察する。
+
 \subsection{課題4}
+reserve\_tbを使用する。
+ある顧客の予約の行にその顧客の過去90日間の予約のtotal\_priceの平均を
+(total\_price\_90d)という名前の列で情報として付与する。
+過去90日間に予約がなかった場合は0とする。
+日にちは予約のされた日(reserve\_datetime)を基準にする。
 
 \clearpage
+
 \subsection{結果・検討・考察}
-実験結果の図2,3より、
-myaverage\_integral() は、myaverage\_naive() より処理速度が速い。
-これを計算量の観点から考える。
+\subsection{課題1}
+作成したプログラムは付録Aのソースコード1,2に載せた。実行結果は次のようになった。
+\begin{eqnarray}
+    (\text{reserve\_tb}の行を50％サンプリングした後に顧客を重複なく列にした場合)&=& 2.61010 \nonumber \\
+    (\text{reserve\_tb}から重複のない顧客の列を抽出し50％サンプリングをした場合)&=& 4.69369 \nonumber
+\end{eqnarray}
 
-myaverage\_naive() は、画像の高さ(px)$\times$幅(px)$\times$ フィルタサイズ $\times$ フィルタサイズ
-であるから、O($n^4$)である。
-それに対し、myaverage\_integral() は、画像の高さ(px)$\times$幅(px)のみなので、O($n^2$)である。
-これは挿入ソートやバブルソートなどの遅めのソートに匹敵する。
+このような差が生まれた理由は、
+サンプルされる顧客の数が違うことに原因があると考える。
+後者の場合の方が顧客の数がすくなくなるので相対的に一人あたりの数が増えると考える。
 
-よって、積分画像の平均化フィルタの方が高速化できていることが計算量の観点からも分かる。
-図3において、myaverage\_integral()がフィルタサイズの影響をあまり受けてない理由も同様である。
-
-
-
-
+\subsection{課題2}
+作成したプログラムは付録Aのソースコード3に載せた。
+実行結果は次の図1のようになった。
+price\_maxの列を消そうか考えたが、あるほうが自然なので残した。
 \begin{figure}[h]
     \begin{center}
-        %\includegraphics[scale=0.7]{kadai4_2_3.png}
+        \includegraphics[scale=0.5]{kadai2_1_1.png}
     \end{center}
-    \caption{himeji\_noise.png}
+    \caption{課題2の結果}
 \end{figure}
 
-\section{まとめ}
-パターン認識とは，入力データを複数のクラスに対応させる処理のことである.
+\clearpage
+\subsection{課題3}
+作成したプログラムは付録Aのソースコード4に載せた。
+実行結果は次の図2のようになった。
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[scale=0.5]{kadai2_1_2.png}
+    \end{center}
+    \caption{課題3の結果}
+\end{figure}
 
+正規化したデータを見ると、
+当たり前であるが元データを正規化したことにより
+データが0から1の範囲に収まっていることが分かる。
+
+また、どのデータを見ても分かるが、
+相関はあまり強くない特徴量の組合せであることがわかる。
+
+\subsection{課題4}
+作成したプログラムは付録Aのソースコード5に載せた。
+実行結果は次の図3のようになった。
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[scale=0.25]{kadai2_1_3.png}
+    \end{center}
+    \caption{課題4の結果}
+\end{figure}
+
+\clearpage
+\section{まとめ}
+パターン認識とは、入力データをクラス分けする処理のことであることを学んだ。
+また、実際にPythonでデータ前処理を行って、
+抽出や集約などの基本的なデータ前処理の仕方を理解することができた。
 \clearpage
 \appendix
 \section{付録}
 
-\begin{lstlisting}[style = py,caption=kadai1]
-    #4619055
-    import time
+\begin{lstlisting}[style = py,caption=課題1(1)]
+    ##課題1(reserve_tbの行を50％サンプリングした後に顧客を重複なく列にした場合)
     import numpy as np
-    from skimage.io import imread, imsave
-    from skimage.color import rgb2gray, gray2rgb
-    from skimage.transform import resize
-    from scipy.ndimage.filters import convolve, correlate
-    import skimage.transform
-    import matplotlib.pyplot as plt
-    %matplotlib inline
+    import pandas as pd
+    reserve_tb = pd.read_csv('data/reserve.csv', encoding='UTF-8')
+    
+    reserve_tb = reserve_tb.sample(frac=0.5)
+    target = reserve_tb['customer_id'].unique()
+    
+    kadai1_rslt = reserve_tb[reserve_tb['customer_id'].isin(target)].groupby('customer_id').size().reset_index()
+    
+    kadai1_rslt.columns = ['customer_id','rsv_cnt']
+    
+    print(kadai1_rslt['rsv_cnt'].mean())
 \end{lstlisting}
 
 
+\begin{lstlisting}[style = py,caption=課題1(2)]
+    ##課題1(reserve_tbから重複のない顧客の列を抽出し50％サンプリングをした場合)
+    import numpy as np
+    import pandas as pd
+    reserve_tb = pd.read_csv('data/reserve.csv', encoding='UTF-8')
+    
+    target = pd.Series(reserve_tb['customer_id'].unique()).sample(frac=0.5)
+    kadai1_rslt = reserve_tb[reserve_tb['customer_id'].isin(target)].groupby('customer_id').size().reset_index()
+    
+    kadai1_rslt.columns = ['customer_id','rsv_cnt']
+    
+    print(kadai1_rslt['rsv_cnt'].mean())
+\end{lstlisting}
+
+\begin{lstlisting}[style = py,caption=課題2]
+    ##課題2
+    import numpy as np
+    import pandas as pd
+    reserve_tb = pd.read_csv('data/reserve.csv', encoding='UTF-8')
+    customer_tb = pd.read_csv('data/customer.csv',encoding='UTF-8')
+    
+    kadai2_rslt = pd.merge(reserve_tb.query('"2016-01-01" <= reserve_datetime <= "2016-12-31"'),customer_tb.query('sex == "man"'),
+                           on='customer_id',how='inner')
+    kadai2_rslt = kadai2_rslt.groupby('hotel_id').agg({'total_price':['max']}).reset_index()
+    kadai2_rslt.columns = ['hotel_id','price_max']
+    kadai2_rslt['price_max_rank'] = kadai2_rslt['price_max'].rank(ascending=False,method='min')
+    kadai2_rslt = kadai2_rslt.sort_values('price_max_rank', ascending=True)
+    kadai2_rslt.head(10)
+\end{lstlisting}
+
+\begin{lstlisting}[style = py,caption=課題3]
+    ##課題3
+    import numpy as np
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    from sklearn.preprocessing import MinMaxScaler
+    mmsc = MinMaxScaler()
+    from sklearn.preprocessing import StandardScaler
+    stdsc = StandardScaler()
+    from sklearn.datasets import load_iris
+    iris = load_iris()
+    
+    x1 = iris.data[:,0].reshape(-1,1)
+    x2 = iris.data[:,1].reshape(-1,1)
+    
+    x=np.concatenate((x1,x2), axis=1)
+    plt.axis('equal')
+    plt.scatter(x[:,0],x[:,1], marker="x", label="org")
+    x_norm = mmsc.fit_transform(x)
+    x_std = stdsc.fit_transform(x)
+    plt.scatter(x_std[:,0],x_std[:,1], c='red',marker="x", label="std")
+    plt.scatter(x_norm[:,0],x_norm[:,1], c='green',marker="x", label="norm")
+    plt.xlabel("Sepal Length")
+    plt.ylabel("Sepal Width")
+    plt.legend()
+    plt.grid()
+    plt.show()
+\end{lstlisting}
+
+\begin{lstlisting}[style = py,caption=課題1(2)]
+    ##課題4
+    import numpy as np
+    import pandas as pd
+    reserve_tb = pd.read_csv('data/reserve.csv', encoding='UTF-8')
+    
+    reserve_tb['reserve_datetime'] = pd.to_datetime(reserve_tb['reserve_datetime'])
+    
+    kadai4_rslt = pd.merge(reserve_tb.loc[:, ['reserve_id','customer_id','reserve_datetime']],\
+                        reserve_tb.loc[:, ['customer_id','reserve_datetime', 'total_price']],on='customer_id',how='inner')
+    kadai4_rslt['diffday'] = (kadai4_rslt['reserve_datetime_x'] - kadai4_rslt['reserve_datetime_y']).dt.days
+    kadai4_rslt = kadai4_rslt.query('0 < diffday <= 90').groupby('reserve_id')['total_price'].mean().reset_index()
+    kadai4_rslt.columns = ['reserve_id', 'total_price_90d']
+    kadai4_rslt = pd.merge(reserve_tb,kadai4_rslt,on='reserve_id',how='left').fillna(0)
+    kadai4_rslt.head(15)
+\end{lstlisting}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}
