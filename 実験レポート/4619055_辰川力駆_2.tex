@@ -81,9 +81,31 @@
 変数間の関係を探し出し、
 それぞれのモデルに最適な特徴量の組み合わせを探し出す手法である。
 
-\subsubsection*{考察}
+それについて実装したのがソースコード1である。結果を比較すると以下の表1のようになる。
+
+\begin{table}[htb]
+    \caption{ロジスティクス回帰モデルの変数選択をした場合としていない場合}
+    \begin{center}
+        \begin{tabular}{|c||c|c|}
+            \hline
+                      & 変数選択なし(すべて使う) & 変数選択あり \\ \hline \hline
+            accuracy  & 0.78125                  & 0.78125      \\ \hline
+            汎化誤差  & 0.21875                  & 0.21875      \\ \hline
+            precision & 0.72727                  & 0.73810      \\ \hline
+            f1 score  & 0.64646                  & 0.63918      \\ \hline
+        \end{tabular}
+    \end{center}
+\end{table}
 
 \clearpage
+
+\subsubsection*{考察}
+表1より、変数選択なしより変数選択ありのほうが適合率が少しだけ高かった。
+逆にf1 scoreは僅かに変数選択なしのほうが高かった。
+変数選択を実装した場合としない場合でほとんど変わらなかったことから、
+変数選択を実装しなくても全ての変数を用いた場合で十分に
+ロジスティック回帰で良いモデルを作成できると考える。
+
 \subsection{課題2}
 \subsubsection*{課題内容}
 
@@ -146,7 +168,48 @@ sklearn.datasetの中にあるワインの品質データ(Wine recognition datas
 \appendix
 \section{付録}
 \begin{lstlisting}[style = py,caption=レポート課題1]
- 
+    import pandas as pd
+    import numpy as np
+    import seaborn as sns
+    import matplotlib.pyplot as plt
+    from sklearn.model_selection import train_test_split
+    from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
+    from sklearn.metrics import roc_curve, auc
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.feature_selection import RFECV
+    
+    pima = pd.read_csv("data/pima.csv")
+    
+    X = pima.iloc[:,0:7]
+    Y =pima["type"].map({'No': 0, 'Yes': 1})
+    
+    select = RFECV(LogisticRegression(), cv=10, scoring='average_precision')
+    select.fit(X, Y)
+    mask = select.support_
+    X_selected = X.iloc[:,mask]
+    
+    X_tr, X_te, Y_tr, Y_te = train_test_split(X_selected, Y, test_size=0.3, random_state=4619055)
+    
+    lr = LogisticRegression(C=np.inf,solver='newton-cg') 
+    lr.fit(X_tr, Y_tr)
+    
+    Y_pred = lr.predict(X_te)
+    
+    print('confusion matrix = \n', confusion_matrix(y_true=Y_te, y_pred=Y_pred))
+    print('accuracy = ', accuracy_score(y_true=Y_te, y_pred=Y_pred))
+    print('汎化誤差 = ', 1-accuracy_score(y_true=Y_te, y_pred=Y_pred))
+    print('precision = ', precision_score(y_true=Y_te, y_pred=Y_pred))
+    print('f1 score = ', f1_score(y_true=Y_te, y_pred=Y_pred))
+    
+    Y_score = lr.predict_proba(X_te)[:, 1]
+    fpr, tpr, thresholds = roc_curve(y_true=Y_te, y_score=Y_score)
+    
+    plt.plot(fpr, tpr, label='roc curve (area = %0.3f)' % auc(fpr, tpr))
+    plt.plot([0, 1], [0, 1], linestyle='--', label='random')
+    plt.plot([0, 0, 1], [0, 1, 1], linestyle='--', label='ideal')
+    plt.legend()
+    plt.xlabel('false positive rate')
+    plt.ylabel('true positive rate')
 \end{lstlisting}
 
 
@@ -154,7 +217,13 @@ sklearn.datasetの中にあるワインの品質データ(Wine recognition datas
  
 \end{lstlisting}
 
+\begin{lstlisting}[style = py,caption=レポート課題3]
+ 
+\end{lstlisting}
 
+\begin{lstlisting}[style = py,caption=レポート課題4]
+ 
+\end{lstlisting}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}
