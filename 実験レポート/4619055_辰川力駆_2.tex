@@ -1,0 +1,160 @@
+\documentclass[12pt]{jarticle}
+\usepackage{TUSIreport}
+\usepackage{otf}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage[dvipdfmx]{color}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{color}
+\usepackage{hhline}
+\usepackage{fancybox,ascmac}
+\usepackage{multirow}
+\usepackage{url}
+\usepackage{bm}
+\usepackage{listings,jlisting}
+%%%%%%%%%%%%%%%%%%
+\lstdefinestyle{py}{
+    language={Python},
+    backgroundcolor={\color[gray]{.85}},
+    basicstyle={\small},
+    identifierstyle={\small},
+    commentstyle={\small\ttfamily \color[rgb]{0,0.5,0}},
+    keywordstyle={\small\bfseries \color[rgb]{1,0,0}},
+    ndkeywordstyle={\small},
+    stringstyle={\small\ttfamily \color[rgb]{0,0,1}},
+    frame={tb},
+    breaklines=true,
+    columns=[l]{fullflexible},
+    xrightmargin=0zw,
+    xleftmargin=3zw,
+    numberstyle={\scriptsize},
+    stepnumber=1,
+    numbersep=1zw,
+    morecomment=[l]{//}
+}
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 表紙を出力する場合は，\提出者と\共同実験者をいれる
+% \提出者{科目名}{課題名}{提出年}{提出月}{提出日}{学籍番号}{氏名}
+% \共同実験者{一人目}{二人目}{..}{..}{..}{..}{..}{八人目}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\提出者{情報工学実験3}{課題2 パターン認識}
+{2021}{6}{17}{4619055}{辰川力駆}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\共同実験者{}{}{}{}{}{}{}{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 表紙を出力する場合はコメントアウトしない
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\表紙出力
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 以下はレポート本体，reportmain.tex に書いてある．
+% \inputを使っているが，直接書いても良い．
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{はじめに}
+パターン認識とは、
+入力データをあらかじめ定めていた複数のクラスの1つに対応させる処理のことをいう。
+分類を行うクラスの種類に応じて、パターン認識は大きく、
+「分類問題」と「予測問題」に分けることができる。
+また、分類問題、予測問題の両方に関して、
+「教師あり学習」と「教師なし学習」の2つが存在しており、
+本実験では、入力データと出力の組みが与えられているデータを利用したパターン認識である
+「教師あり学習」について理解する。
+また、「教師あり学習」の代表的な手法であるロジスティック回帰
+とサポートベクトルマシンについて実装する。
+
+\section{レポート課題}
+\subsection{課題1}
+\subsubsection*{課題内容}
+講義のロジスティック回帰モデルでは、全ての変数を用いたが、
+モデルに組み込む変数を選択し最適なモデルを選択することができる。
+変数選択手法に関してどれか一つ調べる。
+\subsubsection*{手順}
+\begin{enumerate}
+    \item webで変数選択手法について検索する。
+    \item その変数選択手法に関してPythonで実装する。
+    \item このプログラムを実行する。
+\end{enumerate}
+\subsubsection*{結果}
+
+変数選択手法として、Wrapper Methodについて調べた。
+機械学習モデルを使用して特徴量の組み合わせを評価することで、
+変数間の関係を探し出し、
+それぞれのモデルに最適な特徴量の組み合わせを探し出す手法である。
+
+\subsubsection*{考察}
+
+\clearpage
+\subsection{課題2}
+\subsubsection*{課題内容}
+
+本実験では線形カーネル関数を用いたサポートベクトルマシンの手法を適用した。
+課題2ではそれ以外のカーネル関数を用いたサポートベクトルマシンについて調査し、
+実装する。
+
+\subsubsection*{手順}
+\begin{enumerate}
+    \item webでカーネル関数を用いたサポートベクトルマシンについて検索する。
+    \item そのサポートベクトルマシンに関してPythonで実装する。
+    \item このプログラムを実行する。
+\end{enumerate}
+
+\subsubsection*{結果}
+\subsubsection*{考察}
+\subsection{課題3}
+sklearn.datasetの中にあるワインの品質データ(Wine recognition dataset)を用いて、
+今回の実験の手法(ロジスティック、SVM)の中から2値分類を行う。
+\subsubsection*{課題内容}
+\subsubsection*{手順}
+\subsubsection*{結果}
+\subsubsection*{考察}
+\subsection{課題4}
+\subsubsection*{課題内容}
+\subsubsection*{手順}
+\subsubsection*{結果}
+\subsubsection*{考察}
+
+\section{感想}
+先週の感想でも述べたが、自分的には動画を1つにまとめてくれる方が見やすかった。
+良かった点としては、前回よりは端的にまとめていたので見返すことがしやすかった。
+あまり良くなかった点としては、学校に行くのに動画を見るだけなのはあまり良くないと考える。
+
+\begin{thebibliography}{99}
+    \label{sannkoubunnkenn_chapter}
+    \bibitem[1]{a}
+    特徴量選択のまとめ - Qiita
+
+    \url{https://qiita.com/shimopino/items/5fee7504c7acf044a521}
+
+    最終閲覧日2021/06/20
+
+    \bibitem[2]{b}
+    変数選択(Feature Selection)の実装と改善の確認 - 学習する天然ニューラルネット
+
+    \url{https://aotamasaki.hatenablog.com/entry/2018/04/27/222536}
+
+    最終閲覧日2021/06/20
+
+    \bibitem[3]{c}
+    【SVM】rbfカーネルのハイパーパラメータをグリッドサーチとベイズ最適化で探す【irisデータセット】
+
+    \url{https://kenyu-life.com/2019/08/24/rbf_svm_gs/}
+
+    最終閲覧日2021/06/20
+\end{thebibliography}
+
+\clearpage
+\appendix
+\section{付録}
+\begin{lstlisting}[style = py,caption=レポート課題1]
+ 
+\end{lstlisting}
+
+
+\begin{lstlisting}[style = py,caption=レポート課題2]
+ 
+\end{lstlisting}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
