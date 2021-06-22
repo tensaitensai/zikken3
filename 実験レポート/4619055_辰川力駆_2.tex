@@ -121,7 +121,49 @@
 \end{enumerate}
 
 \subsubsection*{結果}
+線形カーネル関数以外のサポートベクトルマシンとして、
+RBFカーネルについて調べた。
+コスト関数$C$とカーネル関数の$\gamma$を用いる方法であり、
+$\gamma$の値が小さいほど単純な決定境界となり、
+大きいほど複雑な決定境界となる。
+
+それについて実装したのがソースコード2である。
+結果を比較すると以下の表2のようになる。
+
+\begin{eqnarray}
+    \gamma &=& 0.01 \nonumber\\
+    C &=& 1.02 \nonumber
+\end{eqnarray}
+
+\begin{table}[htb]
+    \caption{線形カーネルとRBFカーネルの結果}
+    \begin{center}
+        \begin{tabular}{|c||c|c|}
+            \hline
+                      & 線形カーネル & RBFカーネル \\ \hline \hline
+            accuracy  & 0.78125      & 0.74375     \\ \hline
+            汎化誤差  & 0.21875      & 0.25625     \\ \hline
+            precision & 0.75         & 0.70588     \\ \hline
+            f1 score  & 0.63158      & 0.53933     \\ \hline
+        \end{tabular}
+    \end{center}
+\end{table}
+
+\clearpage
+
 \subsubsection*{考察}
+
+RBFカーネルは、
+\begin{eqnarray}
+    k(x,x') = \text{exp}(-\gamma || x - x' ||^2) \nonumber
+\end{eqnarray}
+という式で定義される。
+
+表2より、accuracy、precision、f1 scoreのどれにおいても
+線形カーネル関数を用いたサポートベクトルマシンの方が性能が高いと分かる。
+なので、今回のデータに関していえば線形カーネル関数を用いた
+サポートベクトルマシンを実装するほうが良いと考える。
+
 \subsection{課題3}
 sklearn.datasetの中にあるワインの品質データ(Wine recognition dataset)を用いて、
 今回の実験の手法(ロジスティック、SVM)の中から2値分類を行う。
@@ -214,7 +256,67 @@ sklearn.datasetの中にあるワインの品質データ(Wine recognition datas
 
 
 \begin{lstlisting}[style = py,caption=レポート課題2]
- 
+    import pandas as pd
+    import numpy as np
+    from sklearn.model_selection import GridSearchCV
+    from sklearn.metrics import classification_report
+    from sklearn.svm import SVC
+    from sklearn.metrics import accuracy_score
+    from sklearn.model_selection import train_test_split
+    from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
+    
+    pima = pd.read_csv("data/pima.csv")
+    X = pima.iloc[:,0:7]
+    Y =pima["type"].map({'No': 0, 'Yes': 1})
+    X_tr, X_te, Y_tr, Y_te = train_test_split(X, Y, test_size=0.3, random_state=4619055)
+    
+    model = SVC(C=1 ,kernel='linear', random_state=4619055)
+    model.fit(X_tr, Y_tr)
+    Y_pred = model.predict(X_te)    
+    
+    print('confusion matrix = \n', confusion_matrix(y_true=Y_te, y_pred=Y_pred))
+    print('accuracy = ', accuracy_score(y_true=Y_te, y_pred=Y_pred))
+    print('汎化誤差 = ', 1-accuracy_score(y_true=Y_te, y_pred=Y_pred))
+    print('precision = ', precision_score(y_true=Y_te, y_pred=Y_pred))
+    print('f1 score = ', f1_score(y_true=Y_te, y_pred=Y_pred))
+    
+    best_score = float(0.0)
+    best_param_gamma = 0.0
+    best_param_C = 0.0
+     
+    scores = pd.DataFrame()
+    for gamma in np.linspace(0.01, 10, 100):
+        for C in np.linspace(0.01, 10, 100):
+            svm = SVC(kernel = 'rbf', gamma=gamma, C=C, random_state=4619055)
+            svm.fit(X_tr, Y_tr)
+            scores = scores.append(
+                    {
+                        'gamma': gamma,
+                        'C': C,
+                        'accuracy': svm.score(X_te, Y_te)
+                    },
+                    ignore_index=True)
+            
+            if best_score < svm.score(X_te, Y_te):
+                best_score = svm.score(X_te, Y_te)
+                best_param_gamma = gamma
+                best_param_C = C
+                
+    print("ベストスコア：", round(best_score,2))
+    print('g:%s c:%s' %(round(best_param_gamma,2),round(best_param_C,2)))
+    
+    gamma = best_param_gamma
+    C = best_param_C
+     
+    svm = SVC(kernel = 'rbf', gamma=gamma, C=C, random_state=4619055)
+     
+    svm.fit(X_tr, Y_tr)
+    Y_pred = svm.predict(X_te)
+    print('confusion matrix = \n', confusion_matrix(y_true=Y_te, y_pred=Y_pred))
+    print('accuracy = ', accuracy_score(y_true=Y_te, y_pred=Y_pred))
+    print('汎化誤差 = ', 1-accuracy_score(y_true=Y_te, y_pred=Y_pred))
+    print('precision = ', precision_score(y_true=Y_te, y_pred=Y_pred))
+    print('f1 score = ', f1_score(y_true=Y_te, y_pred=Y_pred))
 \end{lstlisting}
 
 \begin{lstlisting}[style = py,caption=レポート課題3]
